@@ -75,6 +75,7 @@ public class Ezra_op extends LinearOpMode {
 
         boolean slowMode = false;
         boolean armSlowMode = false;
+        boolean slock = true;
 
         while (opModeIsActive()) {
 
@@ -115,6 +116,7 @@ public class Ezra_op extends LinearOpMode {
                 if (gamepad2.a)
                     armSlowMode = !armSlowMode;
 
+
                 // Send calculated power to wheels
                 double powers[] = {leftFrontPower, leftBackPower, rightBackPower, rightFrontPower};
                 if (slowMode)
@@ -126,6 +128,10 @@ public class Ezra_op extends LinearOpMode {
                     arm.setPower(0);
                 } else if (arm.getPower() < 0 && arm.getCurrentPosition() < MIN_POSITION) {
                     arm.setPower(0);
+                }
+
+                if (arm.getPower() < 0.1 || arm.getPower() > -0.1 && slock == true){
+                    arm.setTargetPosition(arm.getCurrentPosition());
                 }
 
                 if (gamepad1.dpad_left){
@@ -140,11 +146,14 @@ public class Ezra_op extends LinearOpMode {
                 else
                     hardware.setArmPower(armPower);
 
-                if (gamepad2.left_bumper)
-                    hardware.setClawposition(1);
-                else if (gamepad2.left_trigger > 0.2)
-                    hardware.setClawposition(hardware.getClawposition() - 0.05);
-                else hardware.setClawposition(0.5);
+                if (gamepad2.left_bumper && slock == false)
+                    slock = true;
+                else if (gamepad2.left_bumper && slock == true) {
+                    slock = false;
+                    sleep(1000);
+                    slock = true;
+                }
+
 
                 // Show the elapsed game time and wheel power.
                 telemetry.addData("Status", "Run Time: " + runtime.toString());
