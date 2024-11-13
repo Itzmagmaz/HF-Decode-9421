@@ -34,8 +34,8 @@ public class Hardware {
         private DcMotor leftBackDrive = null;
         private DcMotor rightFrontDrive = null;
         private DcMotor rightBackDrive = null;
-        private DcMotor arm = null;
-        public Servo claw;
+        private DcMotor arm = null; //Arm is a extra motor
+        public Servo claw; // idk why it public
         private IMU imu;
         private double yawChangeAmt = 10;
         private double imuangle;
@@ -48,7 +48,7 @@ public class Hardware {
             BL = leftBackDrive = hardwareMap.get(DcMotor.class, "BL");
             FR = rightFrontDrive = hardwareMap.get(DcMotor.class, "FR");
             BR = rightBackDrive = hardwareMap.get(DcMotor.class, "BR");
-            arm = hardwareMap.get(DcMotor.class, "ARM");
+            arm = hardwareMap.get(DcMotor.class, "ARM"); //Arm is a extra motor
             claw = hardwareMap.get(Servo.class, "CLAW");
             imu =  hardwareMap.get(IMU.class, "imu");
 
@@ -78,15 +78,12 @@ public class Hardware {
             return orientation.getYaw(AngleUnit.DEGREES);
         }
 
-        public void storeImu() {
-            imuangle = getYaw();
-        }
+       // public void storeImu() {
+       //     imuangle = getYaw();
+        //}
 
-        public void checkImu() {
-
-            if (Math.abs(getYaw() - imuangle) < yawChangeAmt)
-                ;
-        }
+       // public void checkImu() {
+      //  }
 
         public void setArmPower(double power)
         {

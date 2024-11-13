@@ -36,9 +36,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name="Ezra_op", group="Linear OpMode")
-public class
-Ezra_op extends LinearOpMode {
+@TeleOp(name="Goat_op", group="Linear OpMode")
+public class Goat_op extends LinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.
     private ElapsedTime runtime = new ElapsedTime();
@@ -84,83 +83,83 @@ Ezra_op extends LinearOpMode {
             // run until the end of the match (driver presses STOP)
             //while (opModeIsActive()) {
 
-                double max;
+            double max;
 
-                // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
-                double axial = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
-                double lateral = gamepad1.left_stick_x;
-                double yaw = gamepad1.right_stick_x;
-                // Combine the joystick requests for each axis-motion to determine each wheel's power.
-                // Set up a variable for each drive wheel to save the power level for telemetry.
-                double leftFrontPower = axial + lateral + yaw;
-                double rightFrontPower = axial - lateral - yaw;
-                double leftBackPower = axial - lateral + yaw;
-                double rightBackPower = axial + lateral - yaw;
-                double armPower = gamepad2.left_stick_y;
-
-
-                // Normalize the values so no wheel power exceeds 100%
-                // This ensures that the robot maintains the desired motion.
-                max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
-                max = Math.max(max, Math.abs(leftBackPower));
-                max = Math.max(max, Math.abs(rightBackPower));
-
-                if (max > 1.0) {
-                    leftFrontPower /= max;
-                    rightFrontPower /= max;
-                    leftBackPower /= max;
-                    rightBackPower /= max;
-                }
-
-                if (gamepad1.left_bumper)
-                    slowMode = !slowMode;
-                if (gamepad2.a)
-                    armSlowMode = !armSlowMode;
+            // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
+            double axial = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
+            double lateral = gamepad1.left_stick_x;
+            double yaw = gamepad1.right_stick_x;
+            // Combine the joystick requests for each axis-motion to determine each wheel's power.
+            // Set up a variable for each drive wheel to save the power level for telemetry.
+            double leftFrontPower = axial + lateral + yaw;
+            double rightFrontPower = axial - lateral - yaw;
+            double leftBackPower = axial - lateral + yaw;
+            double rightBackPower = axial + lateral - yaw;
+            double armPower = gamepad2.left_stick_y;
 
 
-                // Send calculated power to wheels
-                double []powers = {leftFrontPower, leftBackPower, rightBackPower, rightFrontPower};
-                if (slowMode)
-                    hardware.setMotorSlowMode(powers);
-                else
-                    hardware.setMotorPowers(powers);
+            // Normalize the values so no wheel power exceeds 100%
+            // This ensures that the robot maintains the desired motion.
+            max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
+            max = Math.max(max, Math.abs(leftBackPower));
+            max = Math.max(max, Math.abs(rightBackPower));
 
-                if (arm.getPower() > 0 && arm.getCurrentPosition() > MAX_POSITION) {
-                    arm.setPower(0);
-                } else if (arm.getPower() < 0 && arm.getCurrentPosition() < MIN_POSITION) {
-                    arm.setPower(0);
-                }
+            if (max > 1.0) {
+                leftFrontPower /= max;
+                rightFrontPower /= max;
+                leftBackPower /= max;
+                rightBackPower /= max;
+            }
 
-                if (arm.getPower() < 0.1 || arm.getPower() > -0.1 && slock == true){
-                    arm.setTargetPosition(arm.getCurrentPosition());
-                }
-
-                if (gamepad1.dpad_left){
-                    hardware.turnLeft(45,1);
-                }
-                else if (gamepad1.dpad_right){
-                    hardware.turnRight(45,1);
-                }
-
-                if (armSlowMode)
-                    hardware.setArmsSlowMode(armPower);
-                else
-                    hardware.setArmPower(armPower);
-
-                if (gamepad2.left_bumper && slock == false)
-                    slock = true;
-                else if (gamepad2.left_bumper && slock == true) {
-                    slock = false;
-                    sleep(1000);
-                    slock = true;
-                }
+            if (gamepad1.left_bumper)
+                slowMode = !slowMode;
+            if (gamepad2.a)
+                armSlowMode = !armSlowMode;
 
 
-                // Show the elapsed game time and wheel power.
-                telemetry.addData("Status", "Run Time: " + runtime.toString());
-                telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
-                telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
-                telemetry.update();
+            // Send calculated power to wheels
+            double[] powers = {leftFrontPower, leftBackPower, rightBackPower, rightFrontPower};
+            if (slowMode)
+                hardware.setMotorSlowMode(powers);
+            else
+                hardware.setMotorPowers(powers);
+
+            if (arm.getPower() > 0 && arm.getCurrentPosition() > MAX_POSITION) {
+                arm.setPower(0);
+            } else if (arm.getPower() < 0 && arm.getCurrentPosition() < MIN_POSITION) {
+                arm.setPower(0);
+            }
+
+            if (arm.getPower() < 0.1 || arm.getPower() > -0.1 && slock == true){
+                arm.setTargetPosition(arm.getCurrentPosition());
+            }
+
+            if (gamepad1.dpad_left){
+                hardware.turnLeft(45,1);
+            }
+            else if (gamepad1.dpad_right){
+                hardware.turnRight(45,1);
+            }
+
+            if (armSlowMode)
+                hardware.setArmsSlowMode(armPower);
+            else
+                hardware.setArmPower(armPower);
+
+            if (gamepad2.left_bumper && slock == false)
+                slock = true;
+            else if (gamepad2.left_bumper && slock == true) {
+                slock = false;
+                sleep(1000);
+                slock = true;
+            }
+
+
+            // Show the elapsed game time and wheel power.
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
+            telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
+            telemetry.update();
         }
     }
 }
