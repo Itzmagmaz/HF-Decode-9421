@@ -348,7 +348,7 @@ public class Hardware {
                 BR.getCurrentPosition() < BR.getTargetPosition()
         ) {
             setMotorPower(power,power,power,power);
-            telemetry.addData(">> turnLeft() is running...    ", 11115);
+          /*  telemetry.addData(">> turnLeft() is running...    ", 11115);
             telemetry.addData("FL target: ", FL.getTargetPosition());
             telemetry.addData("BL target: ", BL.getTargetPosition());
             telemetry.addData("FR target: ", FR.getTargetPosition());
@@ -357,7 +357,7 @@ public class Hardware {
             telemetry.addData("BL position: ", BL.getCurrentPosition());
             telemetry.addData("FR position: ", FR.getCurrentPosition());
             telemetry.addData("BR position: ", BR.getCurrentPosition());
-            telemetry.update();
+            telemetry.update(); */
         }
         setMotorPower(0,0,0,0);
         setMotorModes(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
