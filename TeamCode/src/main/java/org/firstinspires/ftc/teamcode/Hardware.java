@@ -36,6 +36,7 @@ public class Hardware {
         private DcMotor rightBackDrive = null;
         private DcMotor arm = null; //Arm is a extra motor
         public Servo claw; // idk why it public
+        public Servo pusher;
         private IMU imu;
         private double yawChangeAmt = 10;
         private double imuangle;
@@ -50,7 +51,9 @@ public class Hardware {
             BR = rightBackDrive = hardwareMap.get(DcMotor.class, "BR");
             arm = hardwareMap.get(DcMotor.class, "ARM"); //Arm is a extra motor
             claw = hardwareMap.get(Servo.class, "CLAW");
+            pusher = hardwareMap.get(Servo.class, "PUSH");
             imu =  hardwareMap.get(IMU.class, "imu");
+
 
             arm.setMode(STOP_AND_RESET_ENCODER);
             arm.setMode(RUN_WITHOUT_ENCODER);
@@ -93,6 +96,8 @@ public class Hardware {
         public void setClawposition(double power){claw.setPosition(power);}
         public double getClawposition() { return claw.getPosition(); }
 
+        public void setPushposition(double power){pusher.setPosition(power);}
+        public double getPushposition() { return pusher.getPosition(); }
 
         public void setMotorPowers(double... powers)
         {

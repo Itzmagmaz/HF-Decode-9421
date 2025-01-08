@@ -47,6 +47,7 @@ public class  Ezra_op extends LinearOpMode {
     private DcMotor rightBackDrive = null;
     private DcMotor arm = null; //Arm is a extra motor
     private Servo claw;
+    private Servo pusher;
     public static final double MAX_POSITION = 6000, MIN_POSITION = 0;
     private Hardware hardware;
 
@@ -62,6 +63,7 @@ public class  Ezra_op extends LinearOpMode {
         rightFrontDrive = hardwareMap.get(DcMotor.class, "FR");
         rightBackDrive = hardwareMap.get(DcMotor.class, "BR");
         claw = hardwareMap.get(Servo.class, "CLAW");
+        pusher = hardwareMap.get(Servo.class, "PUSH");
 
         //claw_Green.scaleRange(0.25, 0.75);
         //elbow_Left.scaleRange(0,0.25);  servo programs
@@ -115,6 +117,8 @@ public class  Ezra_op extends LinearOpMode {
                     slowMode = !slowMode;
                 if (gamepad2.a)
                     armSlowMode = !armSlowMode;
+                if (gamepad2.circle)
+                    Pusher.setposition(1);
 
 
                 // Send calculated power to wheels
@@ -154,6 +158,7 @@ public class  Ezra_op extends LinearOpMode {
                     slock = true;
                 }
 
+                if(gamepad2.circle == true)
 
                 // Show the elapsed game time and wheel power.
                 telemetry.addData("Status", "Run Time: " + runtime.toString());
