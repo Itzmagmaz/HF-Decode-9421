@@ -121,7 +121,7 @@ public class  Ezra_op extends LinearOpMode {
                     if (pusher.getPosition() == 0)
                     pusher.setPosition(1);
                     if (pusher.getPosition() == 1)
-                    pusher.setPosition(0);
+                    pusher.setPosition(0); //close
 
 
                 // Send calculated power to wheels
