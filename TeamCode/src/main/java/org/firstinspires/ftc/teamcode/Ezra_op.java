@@ -118,7 +118,10 @@ public class  Ezra_op extends LinearOpMode {
                 if (gamepad2.a)
                     armSlowMode = !armSlowMode;
                 if (gamepad2.circle)
-                    Pusher.setposition(1);
+                    if (pusher.getPosition() == 0)
+                    pusher.setPosition(1);
+                    if (pusher.getPosition() == 1)
+                    pusher.setPosition(0);
 
 
                 // Send calculated power to wheels
