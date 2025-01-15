@@ -122,6 +122,11 @@ public class  Ezra_op extends LinearOpMode {
                     pusher.setPosition(1);
                     if (pusher.getPosition() == 1)
                     pusher.setPosition(0); //close
+                if (gamepad2.square)
+                    if (claw.getPosition() == 0)
+                        claw.setPosition(1);
+                    if (claw.getPosition() == 1)
+                        claw.setPosition(0); //close
 
 
                 // Send calculated power to wheels
