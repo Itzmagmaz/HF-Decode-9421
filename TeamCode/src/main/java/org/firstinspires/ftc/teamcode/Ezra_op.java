@@ -69,6 +69,8 @@ public class  Ezra_op extends LinearOpMode {
         wrist  = hardwareMap.get(Servo.class, "WRIST");
         bucket = hardwareMap.get(Servo.class, "BUCK");
 
+
+        claw.scaleRange(0.4,1);
         //claw_Green.scaleRange(0.25, 0.75);
         //elbow_Left.scaleRange(0,0.25);  servo programs
 
@@ -82,6 +84,7 @@ public class  Ezra_op extends LinearOpMode {
         boolean slowMode = false;
         boolean armSlowMode = false;
         boolean slock = true;
+        boolean clawpos = false;
 
         while (opModeIsActive()) {
 
@@ -121,26 +124,35 @@ public class  Ezra_op extends LinearOpMode {
                     slowMode = !slowMode;
                 if (gamepad2.a)
                     armSlowMode = !armSlowMode;
-                if (gamepad2.circle)
+                if (gamepad2.circle) {
                     if (pusher.getPosition() <= 0.5)
-                    pusher.setPosition(1);
+                        pusher.setPosition(1);
                     if (pusher.getPosition() >= 0.5)
-                    pusher.setPosition(0); //close
-                if (gamepad2.square)
-                    if (claw.getPosition() <= 0.5)
+                        pusher.setPosition(0); //close
+                }
+                if (gamepad2.square) {
+                    if (clawpos == false) {
                         claw.setPosition(1);
-                    if (claw.getPosition() >= 0.5)
-                        claw.setPosition(0); //close
-                if (gamepad2.triangle)
+                        clawpos = true;
+                    }
+                    if (clawpos == true) {
+                        claw.setPosition(0);
+                        clawpos = false;
+                    }
+                }
+                if (gamepad2.triangle) {
                     if (bucket.getPosition() <= 0.5)
                         bucket.setPosition(1);
-                if (bucket.getPosition() >= 0.5)
-                    bucket.setPosition(0); //close
-                if (gamepad2.cross)
+                    if (bucket.getPosition() >= 0.5)
+                        bucket.setPosition(0); //close
+                }
+                if (gamepad2.cross) {
                     if (wrist.getPosition() <= 0.5)
                         wrist.setPosition(1);
-                if (wrist.getPosition() >= 0.5)
-                    wrist.setPosition(0); //close
+                    if (wrist.getPosition() >= 0.5)
+                        wrist.setPosition(0); //close
+                }
+
 
 
                 // Send calculated power to wheels
@@ -186,6 +198,7 @@ public class  Ezra_op extends LinearOpMode {
                 telemetry.addData("Status", "Run Time: " + runtime.toString());
                 telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
                 telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
+                telemetry.addData("jit ", claw.getPosition());
                 telemetry.update();
         }
     }
