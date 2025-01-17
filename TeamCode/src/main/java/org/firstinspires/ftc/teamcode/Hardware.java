@@ -37,6 +37,8 @@ public class Hardware {
         private DcMotor arm = null; //Arm is a extra motor
         public Servo claw; // idk why it public
         public Servo pusher;
+        private Servo wrist;
+        private Servo bucket;
         private IMU imu;
         private double yawChangeAmt = 10;
         private double imuangle;
@@ -52,6 +54,8 @@ public class Hardware {
             arm = hardwareMap.get(DcMotor.class, "ARM"); //Arm is a extra motor
             claw = hardwareMap.get(Servo.class, "CLAW");
             pusher = hardwareMap.get(Servo.class, "PUSH");
+            wrist  = hardwareMap.get(Servo.class, "WRIST");
+            bucket = hardwareMap.get(Servo.class, "BUCK");
             imu =  hardwareMap.get(IMU.class, "imu");
 
 

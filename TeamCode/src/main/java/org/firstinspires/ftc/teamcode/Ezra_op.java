@@ -48,6 +48,8 @@ public class  Ezra_op extends LinearOpMode {
     private DcMotor arm = null; //Arm is a extra motor
     private Servo claw;
     private Servo pusher;
+    private Servo wrist;
+    private Servo bucket;
     public static final double MAX_POSITION = 6000, MIN_POSITION = 0;
     private Hardware hardware;
 
@@ -64,6 +66,8 @@ public class  Ezra_op extends LinearOpMode {
         rightBackDrive = hardwareMap.get(DcMotor.class, "BR");
         claw = hardwareMap.get(Servo.class, "CLAW");
         pusher = hardwareMap.get(Servo.class, "PUSH");
+        wrist  = hardwareMap.get(Servo.class, "WRIST");
+        bucket = hardwareMap.get(Servo.class, "BUCK");
 
         //claw_Green.scaleRange(0.25, 0.75);
         //elbow_Left.scaleRange(0,0.25);  servo programs
@@ -118,15 +122,25 @@ public class  Ezra_op extends LinearOpMode {
                 if (gamepad2.a)
                     armSlowMode = !armSlowMode;
                 if (gamepad2.circle)
-                    if (pusher.getPosition() == 0)
+                    if (pusher.getPosition() <= 0.5)
                     pusher.setPosition(1);
-                    if (pusher.getPosition() == 1)
+                    if (pusher.getPosition() >= 0.5)
                     pusher.setPosition(0); //close
                 if (gamepad2.square)
-                    if (claw.getPosition() == 0)
+                    if (claw.getPosition() <= 0.5)
                         claw.setPosition(1);
-                    if (claw.getPosition() == 1)
+                    if (claw.getPosition() >= 0.5)
                         claw.setPosition(0); //close
+                if (gamepad2.triangle)
+                    if (bucket.getPosition() <= 0.5)
+                        bucket.setPosition(1);
+                if (bucket.getPosition() >= 0.5)
+                    bucket.setPosition(0); //close
+                if (gamepad2.cross)
+                    if (wrist.getPosition() <= 0.5)
+                        wrist.setPosition(1);
+                if (wrist.getPosition() >= 0.5)
+                    wrist.setPosition(0); //close
 
 
                 // Send calculated power to wheels
@@ -166,7 +180,7 @@ public class  Ezra_op extends LinearOpMode {
                     slock = true;
                 }
 
-                if(gamepad2.circle == true)
+
 
                 // Show the elapsed game time and wheel power.
                 telemetry.addData("Status", "Run Time: " + runtime.toString());
