@@ -123,7 +123,7 @@ public class  Ezra_op extends LinearOpMode {
 
                 if (gamepad1.left_bumper)
                     slowMode = !slowMode;
-                if (gamepad2.a)
+                if (gamepad2.left_bumper)
                     armSlowMode = !armSlowMode;
                 if (gamepad2.circle) {
                     if (pushpos == false){
@@ -161,9 +161,9 @@ public class  Ezra_op extends LinearOpMode {
                     if (wristpos == false){
                         wrist.setPosition(1);
                         sleep(200);
-                        wristpos = false;}
+                        wristpos = true;}
 
-                    else if (wristpos == false) {
+                    else if (wristpos == true) {
                         wrist.setPosition(0); //close
                         sleep(200);
                         wristpos = true;
