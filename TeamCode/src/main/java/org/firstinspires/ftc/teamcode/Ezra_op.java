@@ -70,14 +70,13 @@ public class  Ezra_op extends LinearOpMode {
         bucket = hardwareMap.get(Servo.class, "BUCK");
 
 
-        claw.scaleRange(0.4,1);
+
         //claw_Green.scaleRange(0.25, 0.75);
         //elbow_Left.scaleRange(0,0.25);  servo programs
 
         // Wait for the game to start (driver presses PLAY)
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-
         waitForStart();
         runtime.reset();
 
@@ -85,6 +84,9 @@ public class  Ezra_op extends LinearOpMode {
         boolean armSlowMode = false;
         boolean slock = true;
         boolean clawpos = false;
+        boolean pushpos = false;
+        boolean buckpos = false;
+        boolean wristpos = false;
 
         while (opModeIsActive()) {
 
@@ -106,7 +108,6 @@ public class  Ezra_op extends LinearOpMode {
                 double rightBackPower = axial + lateral - yaw;
                 double armPower = gamepad2.left_stick_y;
 
-
                 // Normalize the values so no wheel power exceeds 100%
                 // This ensures that the robot maintains the desired motion.
                 max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
@@ -125,32 +126,48 @@ public class  Ezra_op extends LinearOpMode {
                 if (gamepad2.a)
                     armSlowMode = !armSlowMode;
                 if (gamepad2.circle) {
-                    if (pusher.getPosition() <= 0.5)
+                    if (pushpos == false){
                         pusher.setPosition(1);
-                    if (pusher.getPosition() >= 0.5)
+                        sleep(200);
+                        pushpos = true;}
+                   else if (pushpos == true){
                         pusher.setPosition(0); //close
+                        sleep(200);
+                        pushpos = false;}
                 }
                 if (gamepad2.square) {
                     if (clawpos == false) {
                         claw.setPosition(1);
+                        sleep(200);
                         clawpos = true;
                     }
-                    if (clawpos == true) {
+                    else if (clawpos == true) {
                         claw.setPosition(0);
+                        sleep(200);
                         clawpos = false;
                     }
                 }
                 if (gamepad2.triangle) {
-                    if (bucket.getPosition() <= 0.5)
+                    if (buckpos == false){
                         bucket.setPosition(1);
-                    if (bucket.getPosition() >= 0.5)
+                        sleep(200);
+                        buckpos = true;}
+                    else if (buckpos == true){
                         bucket.setPosition(0); //close
+                        sleep(200);
+                        buckpos = false;}
                 }
                 if (gamepad2.cross) {
-                    if (wrist.getPosition() <= 0.5)
+                    if (wristpos == false){
                         wrist.setPosition(1);
-                    if (wrist.getPosition() >= 0.5)
+                        sleep(200);
+                        wristpos = false;}
+
+                    else if (wristpos == false) {
                         wrist.setPosition(0); //close
+                        sleep(200);
+                        wristpos = true;
+                    }
                 }
 
 
