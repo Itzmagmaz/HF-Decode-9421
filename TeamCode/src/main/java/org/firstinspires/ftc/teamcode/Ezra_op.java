@@ -85,6 +85,9 @@ public class  Ezra_op extends LinearOpMode {
         boolean armSlowMode = false;
         boolean slock = true;
         boolean clawpos = false;
+        boolean pushpos = false;
+        boolean buckpos = false;
+        boolean wristpos = false;
 
         while (opModeIsActive()) {
 
@@ -125,10 +128,12 @@ public class  Ezra_op extends LinearOpMode {
                 if (gamepad2.a)
                     armSlowMode = !armSlowMode;
                 if (gamepad2.circle) {
-                    if (pusher.getPosition() <= 0.5)
+                    if (pushpos == false){
                         pusher.setPosition(1);
-                    if (pusher.getPosition() >= 0.5)
+                        pushpos = true;}
+                    if (pushpos == true){
                         pusher.setPosition(0); //close
+                        pushpos = false;}
                 }
                 if (gamepad2.square) {
                     if (clawpos == false) {
@@ -141,16 +146,22 @@ public class  Ezra_op extends LinearOpMode {
                     }
                 }
                 if (gamepad2.triangle) {
-                    if (bucket.getPosition() <= 0.5)
+                    if (buckpos == false){
                         bucket.setPosition(1);
-                    if (bucket.getPosition() >= 0.5)
+                        clawpos = true;}
+                    if (buckpos == true){
                         bucket.setPosition(0); //close
+                        clawpos = false;}
                 }
                 if (gamepad2.cross) {
-                    if (wrist.getPosition() <= 0.5)
+                    if (wristpos == false){
                         wrist.setPosition(1);
-                    if (wrist.getPosition() >= 0.5)
+                        wristpos = false;}
+
+                    if (clawpos == false) {
                         wrist.setPosition(0); //close
+                        wristpos = true;
+                    }
                 }
 
 
