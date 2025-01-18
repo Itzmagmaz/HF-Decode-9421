@@ -70,14 +70,13 @@ public class  Ezra_op extends LinearOpMode {
         bucket = hardwareMap.get(Servo.class, "BUCK");
 
 
-        claw.scaleRange(0.4,1);
+
         //claw_Green.scaleRange(0.25, 0.75);
         //elbow_Left.scaleRange(0,0.25);  servo programs
 
         // Wait for the game to start (driver presses PLAY)
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-
         waitForStart();
         runtime.reset();
 
@@ -109,7 +108,6 @@ public class  Ezra_op extends LinearOpMode {
                 double rightBackPower = axial + lateral - yaw;
                 double armPower = gamepad2.left_stick_y;
 
-
                 // Normalize the values so no wheel power exceeds 100%
                 // This ensures that the robot maintains the desired motion.
                 max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
@@ -131,7 +129,7 @@ public class  Ezra_op extends LinearOpMode {
                     if (pushpos == false){
                         pusher.setPosition(1);
                         pushpos = true;}
-                    if (pushpos == true){
+                   else if (pushpos == true){
                         pusher.setPosition(0); //close
                         pushpos = false;}
                 }
@@ -140,7 +138,7 @@ public class  Ezra_op extends LinearOpMode {
                         claw.setPosition(1);
                         clawpos = true;
                     }
-                    if (clawpos == true) {
+                    else if (clawpos == true) {
                         claw.setPosition(0);
                         clawpos = false;
                     }
@@ -148,17 +146,17 @@ public class  Ezra_op extends LinearOpMode {
                 if (gamepad2.triangle) {
                     if (buckpos == false){
                         bucket.setPosition(1);
-                        clawpos = true;}
-                    if (buckpos == true){
+                        buckpos = true;}
+                    else if (buckpos == true){
                         bucket.setPosition(0); //close
-                        clawpos = false;}
+                        buckpos = false;}
                 }
                 if (gamepad2.cross) {
                     if (wristpos == false){
                         wrist.setPosition(1);
                         wristpos = false;}
 
-                    if (clawpos == false) {
+                    else if (wristpos == false) {
                         wrist.setPosition(0); //close
                         wristpos = true;
                     }
