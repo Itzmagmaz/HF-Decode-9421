@@ -128,36 +128,44 @@ public class  Ezra_op extends LinearOpMode {
                 if (gamepad2.circle) {
                     if (pushpos == false){
                         pusher.setPosition(1);
+                        sleep(200);
                         pushpos = true;}
                    else if (pushpos == true){
                         pusher.setPosition(0); //close
+                        sleep(200);
                         pushpos = false;}
                 }
                 if (gamepad2.square) {
                     if (clawpos == false) {
                         claw.setPosition(1);
+                        sleep(200);
                         clawpos = true;
                     }
                     else if (clawpos == true) {
                         claw.setPosition(0);
+                        sleep(200);
                         clawpos = false;
                     }
                 }
                 if (gamepad2.triangle) {
                     if (buckpos == false){
                         bucket.setPosition(1);
+                        sleep(200);
                         buckpos = true;}
                     else if (buckpos == true){
                         bucket.setPosition(0); //close
+                        sleep(200);
                         buckpos = false;}
                 }
                 if (gamepad2.cross) {
                     if (wristpos == false){
                         wrist.setPosition(1);
+                        sleep(200);
                         wristpos = false;}
 
                     else if (wristpos == false) {
                         wrist.setPosition(0); //close
+                        sleep(200);
                         wristpos = true;
                     }
                 }
