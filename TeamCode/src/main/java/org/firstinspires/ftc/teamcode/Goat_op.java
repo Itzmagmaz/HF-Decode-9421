@@ -37,7 +37,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name="Goat_op", group="Linear OpMode")
-public class Goat_op extends LinearOpMode {
+public class  Goat_op extends LinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.
     private ElapsedTime runtime = new ElapsedTime();
@@ -47,6 +47,9 @@ public class Goat_op extends LinearOpMode {
     private DcMotor rightBackDrive = null;
     private DcMotor arm = null; //Arm is a extra motor
     private Servo claw;
+    private Servo pusher;
+    private Servo wrist;
+    private Servo bucket;
     public static final double MAX_POSITION = 6000, MIN_POSITION = 0;
     private Hardware hardware;
 
@@ -62,7 +65,12 @@ public class Goat_op extends LinearOpMode {
         rightFrontDrive = hardwareMap.get(DcMotor.class, "FR");
         rightBackDrive = hardwareMap.get(DcMotor.class, "BR");
         claw = hardwareMap.get(Servo.class, "CLAW");
+        pusher = hardwareMap.get(Servo.class, "PUSH");
+        wrist  = hardwareMap.get(Servo.class, "WRIST");
+        bucket = hardwareMap.get(Servo.class, "BUCK");
 
+
+        claw.scaleRange(0.4,1);
         //claw_Green.scaleRange(0.25, 0.75);
         //elbow_Left.scaleRange(0,0.25);  servo programs
 
@@ -76,6 +84,7 @@ public class Goat_op extends LinearOpMode {
         boolean slowMode = false;
         boolean armSlowMode = false;
         boolean slock = true;
+        boolean clawpos = false;
 
         while (opModeIsActive()) {
 
@@ -88,7 +97,7 @@ public class Goat_op extends LinearOpMode {
             // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
             double axial = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
             double lateral = gamepad1.left_stick_x;
-            double yaw = gamepad1.right_stick_x;
+            double yaw = -gamepad1.right_stick_x;
             // Combine the joystick requests for each axis-motion to determine each wheel's power.
             // Set up a variable for each drive wheel to save the power level for telemetry.
             double leftFrontPower = axial + lateral + yaw;
@@ -115,10 +124,39 @@ public class Goat_op extends LinearOpMode {
                 slowMode = !slowMode;
             if (gamepad2.a)
                 armSlowMode = !armSlowMode;
+            if (gamepad2.circle) {
+                if (pusher.getPosition() <= 0.5)
+                    pusher.setPosition(1);
+                if (pusher.getPosition() >= 0.5)
+                    pusher.setPosition(0); //close
+            }
+            if (gamepad2.square) {
+                if (clawpos == false) {
+                    claw.setPosition(1);
+                    clawpos = true;
+                }
+                if (clawpos == true) {
+                    claw.setPosition(0);
+                    clawpos = false;
+                }
+            }
+            if (gamepad2.triangle) {
+                if (bucket.getPosition() <= 0.5)
+                    bucket.setPosition(1);
+                if (bucket.getPosition() >= 0.5)
+                    bucket.setPosition(0); //close
+            }
+            if (gamepad2.cross) {
+                if (wrist.getPosition() <= 0.5)
+                    wrist.setPosition(1);
+                if (wrist.getPosition() >= 0.5)
+                    wrist.setPosition(0); //close
+            }
+
 
 
             // Send calculated power to wheels
-            double[] powers = {leftFrontPower, leftBackPower, rightBackPower, rightFrontPower};
+            double []powers = {leftFrontPower, leftBackPower, rightBackPower, rightFrontPower};
             if (slowMode)
                 hardware.setMotorSlowMode(powers);
             else
@@ -155,10 +193,12 @@ public class Goat_op extends LinearOpMode {
             }
 
 
+
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
             telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
+            telemetry.addData("jit ", claw.getPosition());
             telemetry.update();
         }
     }
