@@ -165,7 +165,8 @@ public class  Goat_op extends LinearOpMode {
                 if (wristpos == false){
                     wrist.setPosition(1);
                     sleep(200);
-                    wristpos = false;}
+                    wristpos = false;
+                }
 
                 else if (wristpos == false) {
                     wrist.setPosition(0); //close
