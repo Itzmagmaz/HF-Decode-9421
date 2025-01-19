@@ -135,7 +135,7 @@ public class  Goat_op extends LinearOpMode {
 
             if (gamepad1.left_bumper)
                 slowMode = !slowMode;
-            if (gamepad2.a)
+            if (gamepad2.y)
                 armSlowMode = !armSlowMode;
             if (gamepad2.circle) { //b WORKING GOOD (WRIST)
                 if (pushpos == false){
