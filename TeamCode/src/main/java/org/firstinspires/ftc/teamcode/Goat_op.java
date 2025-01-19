@@ -46,6 +46,7 @@ public class  Goat_op extends LinearOpMode {
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
     private DcMotor arm = null; //Arm is a extra motor
+    private DcMotor slider = null;
     private Servo claw;
     private Servo pusher;
     private Servo wrist;
@@ -68,6 +69,7 @@ public class  Goat_op extends LinearOpMode {
         // to the names assigned during the robot configuration step on the DS or RC devices.
         hardware = new Hardware(hardwareMap);
         arm = hardwareMap.get(DcMotor.class, "ARM"); //Arm is a extra motor
+        slider = hardwareMap.get(DcMotor.class, "SLIDE");
         leftFrontDrive = hardwareMap.get(DcMotor.class, "FL");
         leftBackDrive = hardwareMap.get(DcMotor.class, "BL");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "FR");
@@ -115,6 +117,7 @@ public class  Goat_op extends LinearOpMode {
             double leftBackPower = axial - lateral + yaw;
             double rightBackPower = axial + lateral - yaw;
             double armPower = gamepad2.left_stick_y;
+            double slidePower = gamepad2.right_stick_y;
 
 
             // Normalize the values so no wheel power exceeds 100%
@@ -177,6 +180,8 @@ public class  Goat_op extends LinearOpMode {
 
 
 
+
+
             // Send calculated power to wheels
             double []powers = {leftFrontPower, leftBackPower, rightBackPower, rightFrontPower};
             if (slowMode)
@@ -192,6 +197,16 @@ public class  Goat_op extends LinearOpMode {
 
             if (arm.getPower() < 0.1 || arm.getPower() > -0.1 && slock == true){
                 arm.setTargetPosition(arm.getCurrentPosition());
+            }
+
+            if (slider.getPower() > 0 && slider.getCurrentPosition() > MAX_POSITION) {
+                slider.setPower(0);
+            } else if (slider.getPower() < 0 && slider.getCurrentPosition() < MIN_POSITION) {
+                slider.setPower(0);
+            }
+
+            if (slider.getPower() < 0.1 || slider.getPower() > -0.1){
+                slider.setTargetPosition(slider.getCurrentPosition());
             }
 
             if (gamepad1.dpad_left){
