@@ -123,7 +123,7 @@ public class  Ezra_op extends LinearOpMode {
 
             if (gamepad1.left_bumper)
                 slowMode = !slowMode;
-            if (gamepad2.left_bumper)
+            if (gamepad2.right_bumper)
                 armSlowMode = !armSlowMode;
             if (gamepad2.circle) {
                 if (pushpos == false){
