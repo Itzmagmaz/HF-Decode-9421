@@ -53,6 +53,14 @@ public class  Goat_op extends LinearOpMode {
     public static final double MAX_POSITION = 6000, MIN_POSITION = 0;
     private Hardware hardware;
 
+    boolean slowMode = false;
+    boolean armSlowMode = false;
+    boolean slock = true;
+    boolean clawpos = false;
+    boolean pushpos = false;
+    boolean buckpos = false;
+    boolean wristpos = false;
+
     @Override
     public void runOpMode() {
         //GEEEEEE
@@ -85,6 +93,8 @@ public class  Goat_op extends LinearOpMode {
         boolean armSlowMode = false;
         boolean slock = true;
         boolean clawpos = false;
+
+        String clawPosUpdater = "" + claw.getPosition();
 
         while (opModeIsActive()) {
 
@@ -124,19 +134,24 @@ public class  Goat_op extends LinearOpMode {
                 slowMode = !slowMode;
             if (gamepad2.a)
                 armSlowMode = !armSlowMode;
-            if (gamepad2.circle) {
-                if (pusher.getPosition() <= 0.5)
-                    pusher.setPosition(1);
-                if (pusher.getPosition() >= 0.5)
-                    pusher.setPosition(0); //close
+            if (gamepad2.circle) { //b WORKING GOOD (WRIST)
+                if (pushpos == false){
+                    pusher.setPosition(0.5);
+                    sleep(200);
+                    pushpos = true;}
+                else if (pushpos == true){
+                    pusher.setPosition(0.1); //close
+                    sleep(200);
+                    pushpos = false;
+                }
             }
-            if (gamepad2.square) {
+            if (gamepad2.square) { //x
                 if (clawpos == false) {
-                    claw.setPosition(1);
+                    claw.setPosition(1.0);
                     clawpos = true;
                 }
-                if (clawpos == true) {
-                    claw.setPosition(0);
+                else if (clawpos == true) { //open
+                    claw.setPosition(0.0);
                     clawpos = false;
                 }
             }
@@ -147,10 +162,16 @@ public class  Goat_op extends LinearOpMode {
                     bucket.setPosition(0); //close
             }
             if (gamepad2.cross) {
-                if (wrist.getPosition() <= 0.5)
+                if (wristpos == false){
                     wrist.setPosition(1);
-                if (wrist.getPosition() >= 0.5)
+                    sleep(200);
+                    wristpos = false;}
+
+                else if (wristpos == false) {
                     wrist.setPosition(0); //close
+                    sleep(200);
+                    wristpos = true;
+                }
             }
 
 
@@ -199,6 +220,7 @@ public class  Goat_op extends LinearOpMode {
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
             telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
             telemetry.addData("jit ", claw.getPosition());
+            telemetry.addData("jit2", clawPosUpdater);
             telemetry.update();
         }
     }
