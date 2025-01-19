@@ -176,6 +176,7 @@ public class  Goat_op extends LinearOpMode {
 
 
 
+
             // Send calculated power to wheels
             double []powers = {leftFrontPower, leftBackPower, rightBackPower, rightFrontPower};
             if (slowMode)
