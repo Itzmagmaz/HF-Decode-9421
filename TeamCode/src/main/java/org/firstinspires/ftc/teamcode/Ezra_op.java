@@ -94,131 +94,129 @@ public class  Ezra_op extends LinearOpMode {
             // run until the end of the match (driver presses STOP)
             //while (opModeIsActive()) {
 
-                double max;
+            double max;
 
-                // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
-                double axial = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
-                double lateral = gamepad1.left_stick_x;
-                double yaw = -gamepad1.right_stick_x;
-                // Combine the joystick requests for each axis-motion to determine each wheel's power.
-                // Set up a variable for each drive wheel to save the power level for telemetry.
-                double leftFrontPower = axial + lateral + yaw;
-                double rightFrontPower = axial - lateral - yaw;
-                double leftBackPower = axial - lateral + yaw;
-                double rightBackPower = axial + lateral - yaw;
-                double armPower = gamepad2.left_stick_y;
+            // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
+            double axial = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
+            double lateral = gamepad1.left_stick_x;
+            double yaw = -gamepad1.right_stick_x;
+            // Combine the joystick requests for each axis-motion to determine each wheel's power.
+            // Set up a variable for each drive wheel to save the power level for telemetry.
+            double leftFrontPower = axial + lateral + yaw;
+            double rightFrontPower = axial - lateral - yaw;
+            double leftBackPower = axial - lateral + yaw;
+            double rightBackPower = axial + lateral - yaw;
+            double armPower = gamepad2.left_stick_y;
 
-                // Normalize the values so no wheel power exceeds 100%
-                // This ensures that the robot maintains the desired motion.
-                max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
-                max = Math.max(max, Math.abs(leftBackPower));
-                max = Math.max(max, Math.abs(rightBackPower));
+            // Normalize the values so no wheel power exceeds 100%
+            // This ensures that the robot maintains the desired motion.
+            max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
+            max = Math.max(max, Math.abs(leftBackPower));
+            max = Math.max(max, Math.abs(rightBackPower));
 
-                if (max > 1.0) {
-                    leftFrontPower /= max;
-                    rightFrontPower /= max;
-                    leftBackPower /= max;
-                    rightBackPower /= max;
+            if (max > 1.0) {
+                leftFrontPower /= max;
+                rightFrontPower /= max;
+                leftBackPower /= max;
+                rightBackPower /= max;
+            }
+
+            if (gamepad1.left_bumper)
+                slowMode = !slowMode;
+            if (gamepad2.left_bumper)
+                armSlowMode = !armSlowMode;
+            if (gamepad2.circle) {
+                if (pushpos == false){
+                    pusher.setPosition(1);
+                    sleep(200);
+                    pushpos = true;}
+                else if (pushpos == true){
+                    pusher.setPosition(0); //close
+                    sleep(200);
+                    pushpos = false;}
+            }
+            if (gamepad2.square) {
+                if (clawpos == false) {
+                    claw.setPosition(1);
+                    sleep(200);
+                    clawpos = true;
                 }
-
-                if (gamepad1.left_bumper)
-                    slowMode = !slowMode;
-                if (gamepad2.left_bumper)
-                    armSlowMode = !armSlowMode;
-                if (gamepad2.circle) {
-                    if (pushpos == false){
-                        pusher.setPosition(1);
-                        sleep(200);
-                        pushpos = true;}
-                   else if (pushpos == true){
-                        pusher.setPosition(0); //close
-                        sleep(200);
-                        pushpos = false;}
+                else if (clawpos == true) {
+                    claw.setPosition(0);
+                    sleep(200);
+                    clawpos = false;
                 }
-                if (gamepad2.square) {
-                    if (clawpos == false) {
-                        claw.setPosition(1);
-                        sleep(200);
-                        clawpos = true;
-                    }
-                    else if (clawpos == true) {
-                        claw.setPosition(0);
-                        sleep(200);
-                        clawpos = false;
-                    }
+            }
+            if (gamepad2.triangle) {
+                if (buckpos == false){
+                    bucket.setPosition(1);
+                    sleep(200);
+                    buckpos = true;}
+                else if (buckpos == true){
+                    bucket.setPosition(0); //close
+                    sleep(200);
+                    buckpos = false;}
+            }
+            if (gamepad2.cross) {
+                if (wristpos == false){
+                    wrist.setPosition(1);
+                    sleep(200);
+                    wristpos = true;}
+
+                else if (wristpos == true) {
+                    wrist.setPosition(0); //close
+                    sleep(200);
+                    wristpos = false;
                 }
-                if (gamepad2.triangle) {
-                    if (buckpos == false){
-                        bucket.setPosition(1);
-                        sleep(200);
-                        buckpos = true;}
-                    else if (buckpos == true){
-                        bucket.setPosition(0); //close
-                        sleep(200);
-                        buckpos = false;}
-                }
-                if (gamepad2.cross) {
-                    if (wristpos == false){
-                        wrist.setPosition(1);
-                        sleep(200);
-                        wristpos = true;}
-
-                    else if (wristpos == true) {
-                        wrist.setPosition(0); //close
-                        sleep(200);
-                        wristpos = true;
-                    }
-                }
+            }
 
 
 
-                // Send calculated power to wheels
-                double []powers = {leftFrontPower, leftBackPower, rightBackPower, rightFrontPower};
-                if (slowMode)
-                    hardware.setMotorSlowMode(powers);
-                else
-                    hardware.setMotorPowers(powers);
+            // Send calculated power to wheels
+            double []powers = {leftFrontPower, leftBackPower, rightBackPower, rightFrontPower};
+            if (slowMode)
+                hardware.setMotorSlowMode(powers);
+            else
+                hardware.setMotorPowers(powers);
 
-                if (arm.getPower() > 0 && arm.getCurrentPosition() > MAX_POSITION) {
-                    arm.setPower(0);
-                } else if (arm.getPower() < 0 && arm.getCurrentPosition() < MIN_POSITION) {
-                    arm.setPower(0);
-                }
+            if (arm.getPower() > 0 && arm.getCurrentPosition() > MAX_POSITION) {
+                arm.setPower(0);
+            } else if (arm.getPower() < 0 && arm.getCurrentPosition() < MIN_POSITION) {
+                arm.setPower(0);
+            }
 
-                if (arm.getPower() < 0.1 || arm.getPower() > -0.1 && slock == true){
-                    arm.setTargetPosition(arm.getCurrentPosition());
-                }
+            if (arm.getPower() < 0.1 || arm.getPower() > -0.1 && slock == true){
+                arm.setTargetPosition(arm.getCurrentPosition());
+            }
 
-                if (gamepad1.dpad_left){
-                    hardware.turnLeft(45,1);
-                }
-                else if (gamepad1.dpad_right){
-                    hardware.turnRight(45,1);
-                }
+            if (gamepad1.dpad_left){
+                hardware.turnLeft(45,1);
+            }
+            else if (gamepad1.dpad_right){
+                hardware.turnRight(45,1);
+            }
 
-                if (armSlowMode)
-                    hardware.setArmsSlowMode(armPower);
-                else
-                    hardware.setArmPower(armPower);
+            if (armSlowMode)
+                hardware.setArmsSlowMode(armPower);
+            else
+                hardware.setArmPower(armPower);
 
-                if (gamepad2.left_bumper && slock == false)
-                    slock = true;
-                else if (gamepad2.left_bumper && slock == true) {
-                    slock = false;
-                    sleep(1000);
-                    slock = true;
-                }
+            if (gamepad2.left_bumper && slock == false)
+                slock = true;
+            else if (gamepad2.left_bumper && slock == true) {
+                slock = false;
+                sleep(1000);
+                slock = true;
+            }
 
 
 
-                // Show the elapsed game time and wheel power.
-                telemetry.addData("Status", "Run Time: " + runtime.toString());
-                telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
-                telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
-                telemetry.addData("jit ", claw.getPosition());
-                telemetry.update();
+            // Show the elapsed game time and wheel power.
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
+            telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
+            telemetry.addData("jit ", claw.getPosition());
+            telemetry.update();
         }
     }
 }
-
-
