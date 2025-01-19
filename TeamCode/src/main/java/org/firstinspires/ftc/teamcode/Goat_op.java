@@ -165,10 +165,9 @@ public class  Goat_op extends LinearOpMode {
                 if (wristpos == false){
                     wrist.setPosition(1);
                     sleep(200);
-                    wristpos = false;
-                }
+                    wristpos = true;}
 
-                else if (wristpos == false) {
+                else if (wristpos == true) {
                     wrist.setPosition(0); //close
                     sleep(200);
                     wristpos = true;
@@ -221,7 +220,6 @@ public class  Goat_op extends LinearOpMode {
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
             telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
             telemetry.addData("jit ", claw.getPosition());
-            telemetry.addData("jit2", clawPosUpdater);
             telemetry.update();
         }
     }
