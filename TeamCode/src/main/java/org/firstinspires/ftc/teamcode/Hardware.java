@@ -35,6 +35,7 @@ public class Hardware {
         private DcMotor rightFrontDrive = null;
         private DcMotor rightBackDrive = null;
         private DcMotor arm = null; //Arm is a extra motor
+        private DcMotor slider = null;
         public Servo claw; // idk why it public
         public Servo pusher;
         private Servo wrist;
@@ -51,7 +52,8 @@ public class Hardware {
             BL = leftBackDrive = hardwareMap.get(DcMotor.class, "BL");
             FR = rightFrontDrive = hardwareMap.get(DcMotor.class, "FR");
             BR = rightBackDrive = hardwareMap.get(DcMotor.class, "BR");
-            arm = hardwareMap.get(DcMotor.class, "ARM"); //Arm is a extra motor
+            arm = hardwareMap.get(DcMotor.class, "ARM"); //Arm is an extra motor
+            slider = hardwareMap.get(DcMotor.class, "SLIDE");
             claw = hardwareMap.get(Servo.class, "CLAW");
             pusher = hardwareMap.get(Servo.class, "PUSH");
             wrist  = hardwareMap.get(Servo.class, "WRIST");
@@ -67,6 +69,7 @@ public class Hardware {
             rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
             rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
             arm.setDirection(DcMotor.Direction.REVERSE);
+            slider.setDirection(DcMotor.Direction.REVERSE);
 
             RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP;
             RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
@@ -95,6 +98,10 @@ public class Hardware {
         public void setArmPower(double power)
         {
             arm.setPower(power);
+        }
+
+        public void setSliderPower(double power){
+            slider.setPower(power);
         }
 
         public void setClawposition(double power){claw.setPosition(power);}
