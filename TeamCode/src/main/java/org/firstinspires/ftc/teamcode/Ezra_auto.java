@@ -64,7 +64,6 @@ public class Ezra_auto extends LinearOpMode {
         pusher = hardwareMap.get(Servo.class, "PUSH");
         wrist  = hardwareMap.get(Servo.class, "WRIST");
         bucket = hardwareMap.get(Servo.class, "BUCK");
-        imu = hardwareMap.get(IMU.class, "imu");
 
         // Wait for the game to start (driver presses PLAY)
         telemetry.addData("Status", "Initialized");
@@ -81,8 +80,7 @@ public class Ezra_auto extends LinearOpMode {
         //encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
         //encoderDrive(DRIVE_SPEED, -24, -24, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
         while (opModeIsActive()) {
-            telemetry.addLine("...");
-            telemetry.update();
+
         }
     }
 }

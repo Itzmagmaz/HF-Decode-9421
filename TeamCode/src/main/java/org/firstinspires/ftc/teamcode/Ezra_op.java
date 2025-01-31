@@ -107,7 +107,7 @@ public class  Ezra_op extends LinearOpMode {
             double leftBackPower = axial - lateral + yaw;
             double rightBackPower = axial + lateral - yaw;
             double armPower = gamepad2.left_stick_y;
-
+            double pushposition = gamepad2.right_stick_y;
             // Normalize the values so no wheel power exceeds 100%
             // This ensures that the robot maintains the desired motion.
             max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
@@ -125,16 +125,7 @@ public class  Ezra_op extends LinearOpMode {
                 slowMode = !slowMode;
             if (gamepad2.right_bumper)
                 armSlowMode = !armSlowMode;
-            if (gamepad2.circle) {
-                if (pushpos == false){
-                    pusher.setPosition(1);
-                    sleep(200);
-                    pushpos = true;}
-                else if (pushpos == true){
-                    pusher.setPosition(0); //close
-                    sleep(200);
-                    pushpos = false;}
-            }
+
             if (gamepad2.square) {
                 if (clawpos == false) {
                     claw.setPosition(1);
@@ -187,6 +178,10 @@ public class  Ezra_op extends LinearOpMode {
 
             if (arm.getPower() < 0.1 || arm.getPower() > -0.1 && slock == true){
                 arm.setTargetPosition(arm.getCurrentPosition());
+            }
+            if(pushposition < -0.1 || pushposition > 0.1 ){
+                double posAdd = Math.sin((pushposition)/(2*Math.PI/2));
+                pusher.setPosition(pushposition + posAdd);
             }
 
             if (gamepad1.dpad_left){
