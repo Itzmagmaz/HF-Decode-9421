@@ -37,7 +37,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name="Goat_op", group="Linear OpMode")
-public class Goat_op extends LinearOpMode {
+public class  Goat_op extends LinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.
     private ElapsedTime runtime = new ElapsedTime();
@@ -46,9 +46,21 @@ public class Goat_op extends LinearOpMode {
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
     private DcMotor arm = null; //Arm is a extra motor
+    private DcMotor slider = null;
     private Servo claw;
+    private Servo pusher;
+    private Servo wrist;
+    private Servo bucket;
     public static final double MAX_POSITION = 6000, MIN_POSITION = 0;
     private Hardware hardware;
+
+    boolean slowMode = false;
+    boolean armSlowMode = false;
+    boolean slock = true;
+    boolean clawpos = false;
+    boolean pushpos = false;
+    boolean buckpos = false;
+    boolean wristpos = false;
 
     @Override
     public void runOpMode() {
@@ -57,12 +69,18 @@ public class Goat_op extends LinearOpMode {
         // to the names assigned during the robot configuration step on the DS or RC devices.
         hardware = new Hardware(hardwareMap);
         arm = hardwareMap.get(DcMotor.class, "ARM"); //Arm is a extra motor
+        slider = hardwareMap.get(DcMotor.class, "SLIDE");
         leftFrontDrive = hardwareMap.get(DcMotor.class, "FL");
         leftBackDrive = hardwareMap.get(DcMotor.class, "BL");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "FR");
         rightBackDrive = hardwareMap.get(DcMotor.class, "BR");
         claw = hardwareMap.get(Servo.class, "CLAW");
+        pusher = hardwareMap.get(Servo.class, "PUSH");
+        wrist  = hardwareMap.get(Servo.class, "WRIST");
+        bucket = hardwareMap.get(Servo.class, "BUCK");
 
+
+        claw.scaleRange(0.4,1);
         //claw_Green.scaleRange(0.25, 0.75);
         //elbow_Left.scaleRange(0,0.25);  servo programs
 
@@ -76,6 +94,9 @@ public class Goat_op extends LinearOpMode {
         boolean slowMode = false;
         boolean armSlowMode = false;
         boolean slock = true;
+        boolean clawpos = false;
+
+        String clawPosUpdater = "" + claw.getPosition();
 
         while (opModeIsActive()) {
 
@@ -88,7 +109,7 @@ public class Goat_op extends LinearOpMode {
             // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
             double axial = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
             double lateral = gamepad1.left_stick_x;
-            double yaw = gamepad1.right_stick_x;
+            double yaw = -gamepad1.right_stick_x;
             // Combine the joystick requests for each axis-motion to determine each wheel's power.
             // Set up a variable for each drive wheel to save the power level for telemetry.
             double leftFrontPower = axial + lateral + yaw;
@@ -96,6 +117,7 @@ public class Goat_op extends LinearOpMode {
             double leftBackPower = axial - lateral + yaw;
             double rightBackPower = axial + lateral - yaw;
             double armPower = gamepad2.left_stick_y;
+            double slidePower = gamepad2.right_stick_y;
 
 
             // Normalize the values so no wheel power exceeds 100%
@@ -113,12 +135,55 @@ public class Goat_op extends LinearOpMode {
 
             if (gamepad1.left_bumper)
                 slowMode = !slowMode;
-            if (gamepad2.a)
+            if (gamepad2.y)
                 armSlowMode = !armSlowMode;
+            if (gamepad2.circle) { //b WORKING GOOD (WRIST)
+                if (pushpos == false){
+                    pusher.setPosition(0.5);
+                    sleep(200);
+                    pushpos = true;}
+                else if (pushpos == true){
+                    pusher.setPosition(0.1); //close
+                    sleep(200);
+                    pushpos = false;
+                }
+            }
+            if (gamepad2.square) { //x
+                if (clawpos == false) {
+                    claw.setPosition(1.0);
+                    clawpos = true;
+                }
+                else if (clawpos == true) { //open
+                    claw.setPosition(0.0);
+                    clawpos = false;
+                }
+            }
+            if (gamepad2.triangle) {
+                if (bucket.getPosition() <= 0.5)
+                    bucket.setPosition(1);
+                if (bucket.getPosition() >= 0.5)
+                    bucket.setPosition(0); //close
+            }
+            if (gamepad2.cross) {
+                if (wristpos == false){
+                    wrist.setPosition(1);
+                    sleep(200);
+                    wristpos = true;}
+
+                else if (wristpos == true) {
+                    wrist.setPosition(0); //close
+                    sleep(200);
+                    wristpos = false;
+                }
+            }
+
+
+
+
 
 
             // Send calculated power to wheels
-            double[] powers = {leftFrontPower, leftBackPower, rightBackPower, rightFrontPower};
+            double []powers = {leftFrontPower, leftBackPower, rightBackPower, rightFrontPower};
             if (slowMode)
                 hardware.setMotorSlowMode(powers);
             else
@@ -132,6 +197,16 @@ public class Goat_op extends LinearOpMode {
 
             if (arm.getPower() < 0.1 || arm.getPower() > -0.1 && slock == true){
                 arm.setTargetPosition(arm.getCurrentPosition());
+            }
+
+            if (slider.getPower() > 0 && slider.getCurrentPosition() > MAX_POSITION) {
+                slider.setPower(0);
+            } else if (slider.getPower() < 0 && slider.getCurrentPosition() < MIN_POSITION) {
+                slider.setPower(0);
+            }
+
+            if (slider.getPower() < 0.1 || slider.getPower() > -0.1){
+                slider.setTargetPosition(slider.getCurrentPosition());
             }
 
             if (gamepad1.dpad_left){
@@ -155,10 +230,12 @@ public class Goat_op extends LinearOpMode {
             }
 
 
+
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
             telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
+            telemetry.addData("jit ", claw.getPosition());
             telemetry.update();
         }
     }

@@ -94,7 +94,7 @@ public class  Ezra_op extends LinearOpMode {
             // run until the end of the match (driver presses STOP)
             //while (opModeIsActive()) {
 
-                double max;
+            double max;
 
                 // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
                 double axial = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
@@ -161,12 +161,12 @@ public class  Ezra_op extends LinearOpMode {
                     if (wristpos == false){
                         wrist.setPosition(1);
                         sleep(200);
-                        wristpos = true;}
+                        wristpos = false;}
 
-                    else if (wristpos == true) {
+                    else if (wristpos == false) {
                         wrist.setPosition(0); //close
                         sleep(200);
-                        wristpos = false;
+                        wristpos = true;
                     }
                 }
 

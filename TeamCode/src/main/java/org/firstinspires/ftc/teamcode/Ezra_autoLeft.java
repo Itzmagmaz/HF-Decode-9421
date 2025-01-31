@@ -5,23 +5,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.Servo;
-import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.vision.VisionPortal;
-import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
 @Autonomous
-public class Ezra_auto extends LinearOpMode {
+public class Ezra_autoLeft extends LinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.
     private ElapsedTime runtime = new ElapsedTime();
@@ -64,6 +50,7 @@ public class Ezra_auto extends LinearOpMode {
         pusher = hardwareMap.get(Servo.class, "PUSH");
         wrist  = hardwareMap.get(Servo.class, "WRIST");
         bucket = hardwareMap.get(Servo.class, "BUCK");
+        imu = hardwareMap.get(IMU.class, "imu");
 
         // Wait for the game to start (driver presses PLAY)
         telemetry.addData("Status", "Initialized");
@@ -75,12 +62,13 @@ public class Ezra_auto extends LinearOpMode {
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         // THIS IS WHERE HTE STUFF HAPPENS
-        hardware.strafeRight(2,.5);
+        hardware.strafeLeft(2,.5);
         //encoderDrive(DRIVE_SPEED ,  48,  48, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
         //encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
         //encoderDrive(DRIVE_SPEED, -24, -24, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
         while (opModeIsActive()) {
-
+            telemetry.addLine("...");
+            telemetry.update();
         }
     }
 }
