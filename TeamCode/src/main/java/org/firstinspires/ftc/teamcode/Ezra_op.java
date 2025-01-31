@@ -171,7 +171,7 @@ public class  Ezra_op extends LinearOpMode {
                 }
 
 
-//hi
+//hihi
                 // Send calculated power to wheels
                 double []powers = {leftFrontPower, leftBackPower, rightBackPower, rightFrontPower};
                 if (slowMode)
