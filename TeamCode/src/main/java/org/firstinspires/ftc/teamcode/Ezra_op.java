@@ -120,7 +120,7 @@ public class  Ezra_op extends LinearOpMode {
                 leftBackPower /= max;
                 rightBackPower /= max;
             }
-// o
+// oo
             if (gamepad1.left_bumper)
                 slowMode = !slowMode;
             if (gamepad2.right_bumper)
