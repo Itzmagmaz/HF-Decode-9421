@@ -26,7 +26,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
+/*
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -46,21 +46,15 @@ public class  Goat_op extends LinearOpMode {
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
     private DcMotor arm = null; //Arm is a extra motor
-    private DcMotor slider = null;
-    private Servo claw;
-    private Servo pusher;
-    private Servo wrist;
-    private Servo bucket;
+
+    //private Servo claw;
+
     public static final double MAX_POSITION = 6000, MIN_POSITION = 0;
     private Hardware hardware;
 
-    boolean slowMode = false;
-    boolean armSlowMode = false;
-    boolean slock = true;
-    boolean clawpos = false;
-    boolean pushpos = false;
-    boolean buckpos = false;
-    boolean wristpos = false;
+    //boolean slowMode = false;
+    //boolean armSlowMode = false;
+
 
     @Override
     public void runOpMode() {
@@ -216,10 +210,11 @@ public class  Goat_op extends LinearOpMode {
                 hardware.turnRight(45,1);
             }
 
-            if (armSlowMode)
+           /* if (armSlowMode)
                 hardware.setArmsSlowMode(armPower);
             else
                 hardware.setArmPower(armPower);
+
 
             if (gamepad2.left_bumper && slock == false)
                 slock = true;
@@ -241,4 +236,5 @@ public class  Goat_op extends LinearOpMode {
     }
 }
 
+*/
 

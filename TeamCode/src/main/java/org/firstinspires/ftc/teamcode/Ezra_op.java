@@ -45,11 +45,8 @@ public class  Ezra_op extends LinearOpMode {
     private DcMotor leftBackDrive = null;
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
-    private DcMotor arm = null; //Arm is a extra motor
-    private Servo claw;
-    private Servo pusher;
-    private Servo wrist;
-    private Servo bucket;
+    private DcMotor fintake = null; //Arm is a extra motor
+
     public static final double MAX_POSITION = 6000, MIN_POSITION = 0;
     private Hardware hardware;
 
@@ -59,15 +56,12 @@ public class  Ezra_op extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here must correspond
         // to the names assigned during the robot configuration step on the DS or RC devices.
         hardware = new Hardware(hardwareMap);
-        arm = hardwareMap.get(DcMotor.class, "ARM"); //Arm is a extra motor
+        fintake = hardwareMap.get(DcMotor.class, "FINT"); //Arm is a extra motor
         leftFrontDrive = hardwareMap.get(DcMotor.class, "FL");
         leftBackDrive = hardwareMap.get(DcMotor.class, "BL");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "FR");
         rightBackDrive = hardwareMap.get(DcMotor.class, "BR");
-        claw = hardwareMap.get(Servo.class, "CLAW");
-        pusher = hardwareMap.get(Servo.class, "PUSH");
-        wrist  = hardwareMap.get(Servo.class, "WRIST");
-        bucket = hardwareMap.get(Servo.class, "BUCK");
+        //claw = hardwareMap.get(Servo.class, "CLAW");
 
 
 
@@ -81,12 +75,10 @@ public class  Ezra_op extends LinearOpMode {
         runtime.reset();
 
         boolean slowMode = false;
-        boolean armSlowMode = false;
+        //boolean armSlowMode = false;
         boolean slock = true;
-        boolean clawpos = false;
-        boolean pushpos = false;
-        boolean buckpos = false;
-        boolean wristpos = false;
+        //boolean clawpos = false;
+
 
         while (opModeIsActive()) {
 
@@ -106,8 +98,7 @@ public class  Ezra_op extends LinearOpMode {
             double rightFrontPower = axial - lateral - yaw;
             double leftBackPower = axial - lateral + yaw;
             double rightBackPower = axial + lateral - yaw;
-            double armPower = gamepad2.left_stick_y;
-            double pushposition = gamepad2.right_stick_y;
+            //double armPower = gamepad2.left_stick_y;
             // Normalize the values so no wheel power exceeds 100%
             // This ensures that the robot maintains the desired motion.
             max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
@@ -123,10 +114,12 @@ public class  Ezra_op extends LinearOpMode {
 // oo
             if (gamepad1.left_bumper)
                 slowMode = !slowMode;
-            if (gamepad2.right_bumper)
+            /*if (gamepad2.right_bumper)
                 armSlowMode = !armSlowMode;
 
-            if (gamepad2.square) {
+             */
+
+            /*if (gamepad2.square) {
                 if (clawpos == false) {
                     claw.setPosition(1);
                     sleep(200);
@@ -137,29 +130,7 @@ public class  Ezra_op extends LinearOpMode {
                     sleep(200);
                     clawpos = false;
                 }
-            }
-            if (gamepad2.triangle) {
-                if (buckpos == false){
-                    bucket.setPosition(1);
-                    sleep(200);
-                    buckpos = true;}
-                else if (buckpos == true){
-                    bucket.setPosition(0); //close
-                    sleep(200);
-                    buckpos = false;}
-            }
-            if (gamepad2.cross) {
-                if (wristpos == false){
-                    wrist.setPosition(1);
-                    sleep(200);
-                    wristpos = true;}
-
-                else if (wristpos == true) {
-                    wrist.setPosition(0); //close
-                    sleep(200);
-                    wristpos = false;
-                }
-            }
+            */
 
 
 
@@ -170,19 +141,19 @@ public class  Ezra_op extends LinearOpMode {
             else
                 hardware.setMotorPowers(powers);
 
-            if (arm.getPower() > 0 && arm.getCurrentPosition() > MAX_POSITION) {
+            /*if (arm.getPower() > 0 && arm.getCurrentPosition() > MAX_POSITION) {
                 arm.setPower(0);
             } else if (arm.getPower() < 0 && arm.getCurrentPosition() < MIN_POSITION) {
                 arm.setPower(0);
             }
 
-            if (arm.getPower() < 0.1 || arm.getPower() > -0.1 && slock == true){
+             */
+
+           /* if (arm.getPower() < 0.1 || arm.getPower() > -0.1 && slock == true){
                 arm.setTargetPosition(arm.getCurrentPosition());
             }
-            if(pushposition < -0.1 || pushposition > 0.1 ){
-                double posAdd = Math.sin((pushposition)/(2*Math.PI/2));
-                pusher.setPosition(pushposition + posAdd);
-            }
+
+            */
 
             if (gamepad1.dpad_left){
                 hardware.turnLeft(45,1);
@@ -191,10 +162,12 @@ public class  Ezra_op extends LinearOpMode {
                 hardware.turnRight(45,1);
             }
 
-            if (armSlowMode)
+           /* if (armSlowMode)
                 hardware.setArmsSlowMode(armPower);
             else
                 hardware.setArmPower(armPower);
+
+            */
 
             if (gamepad2.left_bumper && slock == false)
                 slock = true;
@@ -210,7 +183,7 @@ public class  Ezra_op extends LinearOpMode {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
             telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
-            telemetry.addData("jit ", claw.getPosition());
+           // telemetry.addData("jit ", claw.getPosition());
             telemetry.update();
         }
     }

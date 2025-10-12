@@ -34,12 +34,9 @@ public class Hardware {
         private DcMotor leftBackDrive = null;
         private DcMotor rightFrontDrive = null;
         private DcMotor rightBackDrive = null;
-        private DcMotor arm = null; //Arm is a extra motor
-        private DcMotor slider = null;
-        public Servo claw; // idk why it public
+        private DcMotor fintake = null;
         public Servo pusher;
-        private Servo wrist;
-        private Servo bucket;
+        //private Servo claw;
         private IMU imu;
         private double yawChangeAmt = 10;
         private double imuangle;
@@ -52,24 +49,19 @@ public class Hardware {
             BL = leftBackDrive = hardwareMap.get(DcMotor.class, "BL");
             FR = rightFrontDrive = hardwareMap.get(DcMotor.class, "FR");
             BR = rightBackDrive = hardwareMap.get(DcMotor.class, "BR");
-            arm = hardwareMap.get(DcMotor.class, "ARM"); //Arm is an extra motor
-            slider = hardwareMap.get(DcMotor.class, "SLIDE");
-            claw = hardwareMap.get(Servo.class, "CLAW");
-            pusher = hardwareMap.get(Servo.class, "PUSH");
-            wrist  = hardwareMap.get(Servo.class, "WRIST");
-            bucket = hardwareMap.get(Servo.class, "BUCK");
+            fintake = hardwareMap.get(DcMotor.class, "FINT");
+            // claw  = hardwareMap.get(Servo.class, "CLAW");
             imu =  hardwareMap.get(IMU.class, "imu");
 
 
-            arm.setMode(STOP_AND_RESET_ENCODER);
-            arm.setMode(RUN_WITHOUT_ENCODER);
+            //arm.setMode(STOP_AND_RESET_ENCODER);
+            //arm.setMode(RUN_WITHOUT_ENCODER);
 
             leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
             leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
             rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
             rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
-            arm.setDirection(DcMotor.Direction.REVERSE);
-            slider.setDirection(DcMotor.Direction.REVERSE);
+            fintake.setDirection(DcMotor.Direction.FORWARD);
 
             RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP;
             RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
@@ -95,21 +87,18 @@ public class Hardware {
        // public void checkImu() {
       //  }
 
-        public void setArmPower(double power)
+        public void setFintakePower(double power)
         {
-            arm.setPower(power);
+            fintake.setPower(power);
         }
 
-        public void setSliderPower(double power){
-            slider.setPower(power);
-        }
-
-        public void setClawposition(double power){claw.setPosition(power);}
+        /*public void setClawposition(double power){claw.setPosition(power);}
         public double getClawposition() { return claw.getPosition(); }
 
         public void setPushposition(double power){pusher.setPosition(power);}
         public double getPushposition() { return pusher.getPosition(); }
 
+         */
         public void setMotorPowers(double... powers)
         {
             leftFrontDrive.setPower(powers[0]);
@@ -125,10 +114,10 @@ public class Hardware {
                 rightBackDrive.setPower(powers[2] * SLOW_RATE);
                 rightFrontDrive.setPower(powers[3] * SLOW_RATE);
         }
-        public void setArmsSlowMode(double power)
+        /*public void setArmsSlowMode(double power)
     {
         arm.setPower( power * SLOW_RATE);
-    }
+    }*/
 
 
         public void setMotorPower(double fl, double fr, double bl, double br)
@@ -262,17 +251,21 @@ public class Hardware {
 
     }
 
-    public void armAuto(double power, long milliseconds) throws java.lang.InterruptedException{
+    /*public void armAuto(double power, long milliseconds) throws java.lang.InterruptedException{
             setArmPower(power);
             Thread.sleep(milliseconds);
             setArmPower(0);
         }
 
-        public void clawAuto(double position, long milliseconds) throws java.lang.InterruptedException {
+     */
+
+       /* public void clawAuto(double position, long milliseconds) throws java.lang.InterruptedException {
             setClawposition(position);
             Thread.sleep(milliseconds);
             setClawposition(0.5);
         }
+
+        */
 
 
         public void EmilysCopyPaste(int power) throws java.lang.InterruptedException{
