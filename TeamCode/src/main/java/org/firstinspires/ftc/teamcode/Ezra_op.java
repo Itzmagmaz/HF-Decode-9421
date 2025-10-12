@@ -78,6 +78,7 @@ public class  Ezra_op extends LinearOpMode {
         //boolean armSlowMode = false;
         boolean slock = true;
         //boolean clawpos = false;
+        boolean intakeToggle = false;
 
 
         while (opModeIsActive()) {
@@ -118,7 +119,13 @@ public class  Ezra_op extends LinearOpMode {
                 armSlowMode = !armSlowMode;
 
              */
-
+            if (gamepad1.x)
+            {
+                intakeToggle = !intakeToggle;
+            }
+            if(intakeToggle){
+                hardware.setFintakePower(1);
+            }
             /*if (gamepad2.square) {
                 if (clawpos == false) {
                     claw.setPosition(1);
