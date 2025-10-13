@@ -99,6 +99,11 @@ public class Hardware {
         public double getPushposition() { return pusher.getPosition(); }
 
          */
+
+        public void aimbot(double distance /*distance is in Inches */)
+        {
+            fintake.setPower(5.3*distance - 302);
+        }
         public void setMotorPowers(double... powers)
         {
             leftFrontDrive.setPower(powers[0]);
