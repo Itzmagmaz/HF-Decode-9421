@@ -141,7 +141,7 @@ public class  Ezra_op extends LinearOpMode {
             if(tempshot){
                 hardware.setTempshotPower(1);
             }
-            //temp until cammm
+            //temp until cam
             if(gamepad2.right_stick_y >= 0.1){
                 hardware.setLeftextPower(gamepad2.right_stick_y);
                 hardware.setRightextPower(gamepad2.right_stick_y);
