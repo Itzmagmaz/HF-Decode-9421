@@ -35,7 +35,10 @@ public class Hardware {
         private DcMotor rightFrontDrive = null;
         private DcMotor rightBackDrive = null;
         private DcMotor fintake = null;
-        public Servo pusher;
+        private DcMotor leftext = null;
+        private DcMotor rightext = null;
+        private DcMotor tempshot = null;
+        //public Servo pusher;
         //private Servo claw;
         private IMU imu;
         private double yawChangeAmt = 10;
@@ -50,6 +53,9 @@ public class Hardware {
             FR = rightFrontDrive = hardwareMap.get(DcMotor.class, "FR");
             BR = rightBackDrive = hardwareMap.get(DcMotor.class, "BR");
             fintake = hardwareMap.get(DcMotor.class, "FINT");
+            leftext = hardwareMap.get(DcMotor.class, "LEXT");
+            rightext = hardwareMap.get(DcMotor.class, "REXT");
+            tempshot = hardwareMap.get(DcMotor.class, "TS");
             // claw  = hardwareMap.get(Servo.class, "CLAW");
             imu =  hardwareMap.get(IMU.class, "imu");
 
@@ -62,6 +68,9 @@ public class Hardware {
             rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
             rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
             fintake.setDirection(DcMotor.Direction.FORWARD);
+            leftext.setDirection(DcMotor.Direction.FORWARD);
+            rightext.setDirection(DcMotor.Direction.FORWARD);
+            tempshot.setDirection(DcMotor.Direction.FORWARD);
 
             RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP;
             RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
@@ -92,6 +101,22 @@ public class Hardware {
             fintake.setPower(power);
         }
 
+
+        public void setLeftextPower(double power)
+        {
+            leftext.setPower(power);
+        }
+        public void setRightextPower(double power)
+        {
+            rightext.setPower(power);
+        }
+        public void setTempshotPower(double power)
+        {
+            tempshot.setPower(power);
+        }
+
+
+
         /*public void setClawposition(double power){claw.setPosition(power);}
         public double getClawposition() { return claw.getPosition(); }
 
@@ -102,7 +127,8 @@ public class Hardware {
 
         public void aimbot(double distance /*distance is in Inches */)
         {
-            fintake.setPower(5.3*distance - 302);
+            leftext.setPower(5.3*distance - 302);
+            rightext.setPower(5.3*distance - 302);
         }
         public void setMotorPowers(double... powers)
         {

@@ -46,6 +46,9 @@ public class  Ezra_op extends LinearOpMode {
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
     private DcMotor fintake = null; //Arm is a extra motor
+    private DcMotor leftext = null;
+    private DcMotor rightext = null;
+    private DcMotor tempshot = null;
 
     public static final double MAX_POSITION = 6000, MIN_POSITION = 0;
     private Hardware hardware;
@@ -61,6 +64,9 @@ public class  Ezra_op extends LinearOpMode {
         leftBackDrive = hardwareMap.get(DcMotor.class, "BL");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "FR");
         rightBackDrive = hardwareMap.get(DcMotor.class, "BR");
+        leftext = hardwareMap.get(DcMotor.class, "LEXT");
+        rightext = hardwareMap.get(DcMotor.class, "REXT");
+        tempshot = hardwareMap.get(DcMotor.class, "TS");
         //claw = hardwareMap.get(Servo.class, "CLAW");
 
 
@@ -79,6 +85,7 @@ public class  Ezra_op extends LinearOpMode {
         boolean slock = true;
         //boolean clawpos = false;
         boolean intakeToggle = false;
+        boolean tempshot = false;
 
 
         while (opModeIsActive()) {
@@ -126,6 +133,22 @@ public class  Ezra_op extends LinearOpMode {
             if(intakeToggle){
                 hardware.setFintakePower(1);
             }
+            // temp until alex design
+            if (gamepad2.x)
+            {
+                tempshot= !tempshot;
+            }
+            if(tempshot){
+                hardware.setTempshotPower(1);
+            }
+            //temp until cam
+            if(gamepad2.right_stick_y >= 0.1){
+                hardware.setLeftextPower(gamepad2.right_stick_y);
+                hardware.setRightextPower(gamepad2.right_stick_y);
+            }
+
+
+
             /*if (gamepad2.square) {
                 if (clawpos == false) {
                     claw.setPosition(1);
