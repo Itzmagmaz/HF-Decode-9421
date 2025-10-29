@@ -65,11 +65,11 @@ public class Hardware {
 
             leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
             leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
-            rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-            rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
+            rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+            rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
             fintake.setDirection(DcMotor.Direction.FORWARD);
             leftext.setDirection(DcMotor.Direction.FORWARD);
-            rightext.setDirection(DcMotor.Direction.FORWARD);
+            rightext.setDirection(DcMotor.Direction.REVERSE);
             tempshot.setDirection(DcMotor.Direction.FORWARD);
 
             RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP;
