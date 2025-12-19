@@ -63,13 +63,13 @@ public class Hardware {
             //arm.setMode(STOP_AND_RESET_ENCODER);
             //arm.setMode(RUN_WITHOUT_ENCODER);
 
-            leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-            leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
+            leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+            leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
             rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
             rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
             fintake.setDirection(DcMotor.Direction.FORWARD);
-            leftext.setDirection(DcMotor.Direction.FORWARD);
-            rightext.setDirection(DcMotor.Direction.REVERSE);
+            leftext.setDirection(DcMotor.Direction.REVERSE);
+            rightext.setDirection(DcMotor.Direction.FORWARD);
             tempshot.setDirection(DcMotor.Direction.FORWARD);
 
             RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP;
@@ -144,6 +144,10 @@ public class Hardware {
                 leftBackDrive.setPower(powers[1] * SLOW_RATE);
                 rightBackDrive.setPower(powers[2] * SLOW_RATE);
                 rightFrontDrive.setPower(powers[3] * SLOW_RATE);
+                try {
+                    Thread.sleep(75);
+                } catch (InterruptedException e) {}
+
         }
         /*public void setArmsSlowMode(double power)
     {
@@ -288,7 +292,7 @@ public class Hardware {
             setArmPower(0);
         }
 
-     */
+
 
        /* public void clawAuto(double position, long milliseconds) throws java.lang.InterruptedException {
             setClawposition(position);
@@ -297,6 +301,27 @@ public class Hardware {
         }
 
         */
+
+    public void ezzysleep(int time){
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {}
+    }
+
+    public double dpadsleepM(double shotpower){
+        shotpower -= .025;
+        try {
+            Thread.sleep(25);
+        } catch (InterruptedException e) {}
+        return shotpower;
+    }
+    public double dpadsleepP(double shotpower){
+        shotpower += .025;
+        try {
+            Thread.sleep(25);
+        } catch (InterruptedException e) {}
+        return shotpower;
+    }
 
 
         public void EmilysCopyPaste(int power) throws java.lang.InterruptedException{

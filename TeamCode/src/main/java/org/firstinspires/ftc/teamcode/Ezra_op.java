@@ -86,6 +86,7 @@ public class  Ezra_op extends LinearOpMode {
         //boolean clawpos = false;
         boolean intakeToggle = false;
         boolean tempshot = false;
+        double shotpower = 0.0;
 
 
         while (opModeIsActive()) {
@@ -99,7 +100,8 @@ public class  Ezra_op extends LinearOpMode {
             // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
             double axial = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
             double lateral = gamepad1.left_stick_x;
-            double yaw = -gamepad1.right_stick_x;
+            double yaw = gamepad1.right_stick_x; //changed for specific robot was a - but now +
+
             // Combine the joystick requests for each axis-motion to determine each wheel's power.
             // Set up a variable for each drive wheel to save the power level for telemetry.
             double leftFrontPower = axial + lateral + yaw;
@@ -120,8 +122,10 @@ public class  Ezra_op extends LinearOpMode {
                 rightBackPower /= max;
             }
 // oo
-            if (gamepad1.left_bumper)
+            if (gamepad1.left_bumper) {
                 slowMode = !slowMode;
+                hardware.ezzysleep(25);
+            }
             /*if (gamepad2.right_bumper)
                 armSlowMode = !armSlowMode;
 
@@ -145,14 +149,26 @@ public class  Ezra_op extends LinearOpMode {
                 hardware.setTempshotPower(0);
             }
             //temp until camera
+            /*
             if(gamepad2.right_stick_y >= 0.1){
-                hardware.setLeftextPower(gamepad2.right_stick_y);
-                hardware.setRightextPower(gamepad2.right_stick_y);
+                hardware.setLeftextPower(gamepad2.right_stick_y*.6);
+                hardware.setRightextPower(gamepad2.right_stick_y*.6);
             }
             if(gamepad2.right_stick_y < 0.1){
                 hardware.setLeftextPower(0);
                 hardware.setRightextPower(0);
             }
+            */
+
+
+            if(gamepad2.dpad_up){
+                shotpower = hardware.dpadsleepP(shotpower);
+            }
+            if(gamepad2.dpad_down){
+                shotpower =hardware.dpadsleepM(shotpower);
+            }
+            hardware.setLeftextPower(shotpower);
+            hardware.setRightextPower(shotpower);
 
 
 
@@ -221,6 +237,9 @@ public class  Ezra_op extends LinearOpMode {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
             telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
+            telemetry.addData("rext power",rightext.getPower());
+            telemetry.addData("lext power",leftext.getPower());
+            telemetry.addData("Slow Mode",slowMode);
            // telemetry.addData("jit ", claw.getPosition());
             telemetry.update();
         }
