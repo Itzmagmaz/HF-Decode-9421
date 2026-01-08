@@ -136,7 +136,14 @@ public class  Ezra_op extends LinearOpMode {
             }
             if(intakeToggle){
                 hardware.setFintakePower(1);
+                hardware.ezzysleep(25);
             }
+            else{
+                hardware.setFintakePower(0);
+            }
+
+
+
             // temp until alex design
             if (gamepad2.x)
             {

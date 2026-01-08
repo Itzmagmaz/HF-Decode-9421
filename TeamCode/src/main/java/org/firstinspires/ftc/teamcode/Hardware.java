@@ -56,6 +56,7 @@ public class Hardware {
             leftext = hardwareMap.get(DcMotor.class, "LEXT");
             rightext = hardwareMap.get(DcMotor.class, "REXT");
             tempshot = hardwareMap.get(DcMotor.class, "TS");
+            //LimeLight3A = hardwareMap.get(DcMotor.class, "LimeLight3A");
             // claw  = hardwareMap.get(Servo.class, "CLAW");
             imu =  hardwareMap.get(IMU.class, "imu");
 
@@ -99,6 +100,10 @@ public class Hardware {
         public void setFintakePower(double power)
         {
             fintake.setPower(power);
+          /*  try {
+                Thread.sleep(75);
+            } catch (InterruptedException e) {}
+*/
         }
 
 
