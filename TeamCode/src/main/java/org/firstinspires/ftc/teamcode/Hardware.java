@@ -37,8 +37,11 @@ public class Hardware {
         private DcMotor fintake = null;
         private DcMotor leftext = null;
         private DcMotor rightext = null;
-        private DcMotor tempshot = null;
-        //public Servo pusher;
+
+        private DcMotor spindex = null;
+        private Servo pusher = null;
+        private Servo sintake = null;
+
         //private Servo claw;
         private IMU imu;
         private double yawChangeAmt = 10;
@@ -55,7 +58,9 @@ public class Hardware {
             fintake = hardwareMap.get(DcMotor.class, "FINT");
             leftext = hardwareMap.get(DcMotor.class, "LEXT");
             rightext = hardwareMap.get(DcMotor.class, "REXT");
-            tempshot = hardwareMap.get(DcMotor.class, "TS");
+            spindex = hardwareMap.get(DcMotor.class, "SPIN");
+            pusher = hardwareMap.get(Servo.class, "PUSH");
+            sintake = hardwareMap.get(Servo.class, "SINT");
             //LimeLight3A = hardwareMap.get(DcMotor.class, "LimeLight3A");
             // claw  = hardwareMap.get(Servo.class, "CLAW");
             imu =  hardwareMap.get(IMU.class, "imu");
@@ -68,10 +73,10 @@ public class Hardware {
             leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
             rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
             rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-            fintake.setDirection(DcMotor.Direction.FORWARD);
+            fintake.setDirection(DcMotor.Direction.REVERSE);
             leftext.setDirection(DcMotor.Direction.REVERSE);
             rightext.setDirection(DcMotor.Direction.FORWARD);
-            tempshot.setDirection(DcMotor.Direction.FORWARD);
+            spindex.setDirection(DcMotor.Direction.REVERSE);
 
             RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP;
             RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
@@ -115,20 +120,19 @@ public class Hardware {
         {
             rightext.setPower(power);
         }
-        public void setTempshotPower(double power)
-        {
-            tempshot.setPower(power);
-        }
-
-
+    public void setSpindexpower(double power)
+    {
+        spindex.setPower(power);
+    }
 
         /*public void setClawposition(double power){claw.setPosition(power);}
         public double getClawposition() { return claw.getPosition(); }
-
+         */
         public void setPushposition(double power){pusher.setPosition(power);}
         public double getPushposition() { return pusher.getPosition(); }
 
-         */
+    public void setsintakeposition(double power){sintake.setPosition(power);}
+    public double getsintakeposition() { return sintake.getPosition(); }
 
         public void aimbot(double distance /*distance is in Inches */)
         {

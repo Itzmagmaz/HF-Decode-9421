@@ -48,7 +48,9 @@ public class  Ezra_op extends LinearOpMode {
     private DcMotor fintake = null; //Arm is a extra motor
     private DcMotor leftext = null;
     private DcMotor rightext = null;
-    private DcMotor tempshot = null;
+    private DcMotor Spindex = null;
+    private Servo pusher = null;
+    private Servo sintake = null;
 
     public static final double MAX_POSITION = 6000, MIN_POSITION = 0;
     private Hardware hardware;
@@ -66,7 +68,9 @@ public class  Ezra_op extends LinearOpMode {
         rightBackDrive = hardwareMap.get(DcMotor.class, "BR");
         leftext = hardwareMap.get(DcMotor.class, "LEXT");
         rightext = hardwareMap.get(DcMotor.class, "REXT");
-        tempshot = hardwareMap.get(DcMotor.class, "TS");
+        Spindex = hardwareMap.get(DcMotor.class, "SPIN");
+        pusher = hardwareMap.get(Servo.class, "PUSH");
+        sintake = hardwareMap.get(Servo.class, "SINT");
         //claw = hardwareMap.get(Servo.class, "CLAW");
 
 
@@ -85,7 +89,6 @@ public class  Ezra_op extends LinearOpMode {
         boolean slock = true;
         //boolean clawpos = false;
         boolean intakeToggle = false;
-        boolean tempshot = false;
         double shotpower = 0.0;
 
 
@@ -130,13 +133,14 @@ public class  Ezra_op extends LinearOpMode {
                 armSlowMode = !armSlowMode;
 
              */
-            if (gamepad1.x)
+            if (gamepad1.x) //THIS IS A SQUARE
             {
                 intakeToggle = !intakeToggle;
+                hardware.ezzysleep(25);
             }
             if(intakeToggle){
                 hardware.setFintakePower(1);
-                hardware.ezzysleep(25);
+                //hardware.setsintakeposition();
             }
             else{
                 hardware.setFintakePower(0);
@@ -144,17 +148,6 @@ public class  Ezra_op extends LinearOpMode {
 
 
 
-            // temp until alex design
-            if (gamepad2.x)
-            {
-                tempshot= !tempshot;
-            }
-            if(tempshot){
-                hardware.setTempshotPower(1);
-            }
-            if(!tempshot){
-                hardware.setTempshotPower(0);
-            }
             //temp until camera
             /*
             if(gamepad2.right_stick_y >= 0.1){
@@ -247,6 +240,8 @@ public class  Ezra_op extends LinearOpMode {
             telemetry.addData("rext power",rightext.getPower());
             telemetry.addData("lext power",leftext.getPower());
             telemetry.addData("Slow Mode",slowMode);
+            telemetry.addData("fintake",intakeToggle);
+            telemetry.addData("fintake p",fintake.getPower());
            // telemetry.addData("jit ", claw.getPosition());
             telemetry.update();
         }
