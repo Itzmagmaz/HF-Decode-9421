@@ -140,8 +140,7 @@ public class  Ezra_op extends LinearOpMode {
             }
             if(intakeToggle){
                 hardware.setFintakePower(1);
-                //hardware.setsintakeposition();
-
+                //hardware.setsintakeposition()
             }
             else{
                 hardware.setFintakePower(0);
