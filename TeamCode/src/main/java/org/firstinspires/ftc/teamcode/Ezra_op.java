@@ -76,7 +76,7 @@ public class  Ezra_op extends LinearOpMode {
 
 
 
-        pusher.scaleRange(0.25, 0.75);
+        pusher.scaleRange(0.2, 0.6);
         //elbow_Left.scaleRange(0,0.25);  servo programs
 
         // Wait for the game to start (driver presses PLAY)
