@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
+import com.qualcomm.robotcore.hardware.CRServo;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
@@ -40,10 +40,12 @@ public class Hardware {
 
         private DcMotor spindex = null;
         private Servo pusher = null;
-        private Servo sintake = null;
+        private CRServo sintake = null;
 
         //private Servo claw;
         private IMU imu;
+
+
         private double yawChangeAmt = 10;
         private double imuangle;
 
@@ -60,11 +62,10 @@ public class Hardware {
             rightext = hardwareMap.get(DcMotor.class, "REXT");
             spindex = hardwareMap.get(DcMotor.class, "SPIN");
             pusher = hardwareMap.get(Servo.class, "PUSH");
-            sintake = hardwareMap.get(Servo.class, "SINT");
+            sintake = hardwareMap.get(CRServo.class, "SINT");
             //LimeLight3A = hardwareMap.get(DcMotor.class, "LimeLight3A");
             // claw  = hardwareMap.get(Servo.class, "CLAW");
             imu =  hardwareMap.get(IMU.class, "imu");
-
 
             //arm.setMode(STOP_AND_RESET_ENCODER);
             //arm.setMode(RUN_WITHOUT_ENCODER);
@@ -77,7 +78,7 @@ public class Hardware {
             leftext.setDirection(DcMotor.Direction.REVERSE);
             rightext.setDirection(DcMotor.Direction.FORWARD);
             spindex.setDirection(DcMotor.Direction.REVERSE);
-
+            sintake.setDirection(DcMotorSimple.Direction.REVERSE);
             RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP;
             RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
 
@@ -120,7 +121,7 @@ public class Hardware {
         {
             rightext.setPower(power);
         }
-    public void setSpindexpower(double power)
+        public void setSpindexpower(double power)
     {
         spindex.setPower(power);
     }
@@ -131,8 +132,7 @@ public class Hardware {
         public void setPushposition(double power){pusher.setPosition(power);}
         public double getPushposition() { return pusher.getPosition(); }
 
-    public void setsintakeposition(double power){sintake.setPosition(power);}
-    public double getsintakeposition() { return sintake.getPosition(); }
+        public void setSintakePower(double power){sintake.setPower(power);}
 
         public void aimbot(double distance /*distance is in Inches */)
         {

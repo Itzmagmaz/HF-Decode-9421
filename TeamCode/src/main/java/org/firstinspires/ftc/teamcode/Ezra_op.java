@@ -32,6 +32,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -50,7 +51,7 @@ public class  Ezra_op extends LinearOpMode {
     private DcMotor rightext = null;
     private DcMotor Spindex = null;
     private Servo pusher = null;
-    private Servo sintake = null;
+    private CRServo sintake = null;
 
     public static final double MAX_POSITION = 6000, MIN_POSITION = 0;
     private Hardware hardware;
@@ -70,12 +71,12 @@ public class  Ezra_op extends LinearOpMode {
         rightext = hardwareMap.get(DcMotor.class, "REXT");
         Spindex = hardwareMap.get(DcMotor.class, "SPIN");
         pusher = hardwareMap.get(Servo.class, "PUSH");
-        sintake = hardwareMap.get(Servo.class, "SINT");
+        sintake = hardwareMap.get(CRServo.class, "SINT");
         //claw = hardwareMap.get(Servo.class, "CLAW");
 
 
 
-        //claw_Green.scaleRange(0.25, 0.75);
+        pusher.scaleRange(0.25, 0.75);
         //elbow_Left.scaleRange(0,0.25);  servo programs
 
         // Wait for the game to start (driver presses PLAY)
@@ -140,12 +141,12 @@ public class  Ezra_op extends LinearOpMode {
             }
             if(intakeToggle){
                 hardware.setFintakePower(1);
-                //hardware.setsintakeposition()
+                hardware.setSintakePower(1);
             }
             else{
                 hardware.setFintakePower(0);
+                hardware.setSintakePower(0);
             }
-
 
 
             //temp until camera
@@ -170,7 +171,17 @@ public class  Ezra_op extends LinearOpMode {
             hardware.setLeftextPower(shotpower);
             hardware.setRightextPower(shotpower);
 
-
+            if(gamepad2.right_trigger > 0.2){
+                hardware.setSpindexpower(gamepad2.right_trigger);
+            }
+            else{
+                hardware.setSpindexpower(0);
+            }
+            if(gamepad2.triangle){
+                hardware.setPushposition(1);
+                hardware.ezzysleep(1000);
+                hardware.setPushposition(0);
+            }
 
 
             /*if (gamepad2.square) {
